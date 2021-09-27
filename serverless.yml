@@ -6,6 +6,17 @@ provider:
   runtime: nodejs14.x
   lambdaHashingVersion: '20201221'
   region: us-east-2
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: 
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:GetItem
+            - dynamodb:scan
+          Resource:
+            - arn:aws:dynamodb:us-east-2:975266144394:table/ItemTableNew
 
 functions:
   hello:
@@ -14,6 +25,13 @@ functions:
       - httpApi:
           path: /
           method: get
+  insertItem:
+    handler: src/insertItem.insertItem
+    events:
+      - httpApi:
+          path: /item
+          method: post
+
 resources:
   Resources:
     ItemTableNew:
